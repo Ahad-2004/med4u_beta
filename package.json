@@ -2,7 +2,6 @@
   "name": "med4u_beta",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://yourusername.github.io/med4u",
   "dependencies": {
     "@heroicons/react": "^2.0.18",
     "@testing-library/dom": "^9.3.3",
