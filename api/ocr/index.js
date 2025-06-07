@@ -7,8 +7,8 @@ export const config = {
   },
 };
 
-import formidable from 'formidable';
-import fs from 'fs';
+const formidable = require('formidable');
+const fs = require('fs');
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -16,8 +16,7 @@ export default async function handler(req, res) {
     return;
   }
 
-  // Parse the uploaded file
-  const form = new formidable.IncomingForm();
+  const form = formidable();
   form.parse(req, async (err, fields, files) => {
     if (err) {
       res.status(400).json({ error: 'Error parsing file upload' });
@@ -30,9 +29,10 @@ export default async function handler(req, res) {
     }
     try {
       const worker = await createWorker('eng');
+      const stream = fs.createReadStream(file.filepath || file.path);
       const {
         data: { text },
-      } = await worker.recognize(fs.createReadStream(file.filepath));
+      } = await worker.recognize(stream);
       await worker.terminate();
       res.status(200).json({ text });
     } catch (ocrError) {
