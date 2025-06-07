@@ -1,8 +1,5 @@
 import { PDFDocumentProxy, getDocument } from 'pdfjs-dist';
 
-const OCR_SPACE_API_KEY = process.env.REACT_APP_OCR_SPACE_API_KEY || '';
-const OCR_SPACE_API_URL = 'https://api.ocr.space/parse/image';
-
 // Helper: Render a PDF page to an image (PNG data URL)
 async function renderPageToImage(pdf, pageNum) {
   const page = await pdf.getPage(pageNum);
@@ -20,9 +17,27 @@ async function renderPageToImage(pdf, pageNum) {
   });
 }
 
+// Helper: POST an image blob to the backend OCR API
+async function ocrImageWithBackend(imageBlob) {
+  const formData = new FormData();
+  formData.append('file', imageBlob, 'page.png');
+  const response = await fetch('/api/ocr', {
+    method: 'POST',
+    body: formData
+  });
+  if (!response.ok) {
+    throw new Error(`Backend OCR error: ${response.status} ${response.statusText}`);
+  }
+  const data = await response.json();
+  if (data.error) {
+    throw new Error(`Backend OCR error: ${data.error}`);
+  }
+  return data.text || '';
+}
+
 export const extractTextFromPDF = async (pdfUrl) => {
   try {
-    console.log('Starting PDF split and OCR (per page)...');
+    console.log('Starting PDF split and OCR (per page, backend)...');
     // Fetch the PDF as an ArrayBuffer
     const response = await fetch(pdfUrl);
     if (!response.ok) {
@@ -41,31 +56,9 @@ export const extractTextFromPDF = async (pdfUrl) => {
     for (let i = 1; i <= numPages; i++) {
       console.log(`Processing page ${i} of ${numPages}`);
       const imageBlob = await renderPageToImage(pdf, i);
-      // Prepare form data for OCR.Space
-      const formData = new FormData();
-      formData.append('file', imageBlob, `page${i}.png`);
-      formData.append('language', 'eng');
-      formData.append('isOverlayRequired', 'false');
-      formData.append('OCREngine', '2');
-      // Send to OCR.Space
-      const ocrResponse = await fetch(OCR_SPACE_API_URL, {
-        method: 'POST',
-        headers: {
-          'apikey': OCR_SPACE_API_KEY
-        },
-        body: formData
-      });
-      if (!ocrResponse.ok) {
-        throw new Error(`OCR.Space API error: ${ocrResponse.status} ${ocrResponse.statusText}`);
-      }
-      const ocrResult = await ocrResponse.json();
-      if (ocrResult.IsErroredOnProcessing) {
-        throw new Error(`OCR.Space error (page ${i}): ${ocrResult.ErrorMessage?.join(' ') || 'Unknown error'}`);
-      }
-      const parsedResults = ocrResult.ParsedResults;
-      if (parsedResults && parsedResults.length && parsedResults[0].ParsedText) {
-        allText += parsedResults[0].ParsedText + '\n';
-      }
+      // Send to backend OCR
+      const pageText = await ocrImageWithBackend(imageBlob);
+      allText += pageText + '\n';
     }
     console.log('All pages processed. Returning combined text.');
     return allText.trim();
@@ -73,4 +66,4 @@ export const extractTextFromPDF = async (pdfUrl) => {
     console.error('Error extracting text from PDF:', error);
     throw new Error(`OCR failed: ${error.message}`);
   }
-}; 
+};
