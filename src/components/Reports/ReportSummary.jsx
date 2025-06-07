@@ -4,6 +4,7 @@ import Card from '../UI/Card';
 import Loader from '../UI/Loader';
 import { FiDownload } from 'react-icons/fi';
 import html2pdf from 'html2pdf.js';
+import ProgressBar from '../UI/ProgressBar';
 
 // Simple in-memory cache for summaries
 const summaryCache = new Map();
@@ -12,6 +13,7 @@ const ReportSummary = ({ report }) => {
   const [loading, setLoading] = useState(false);
   const [summary, setSummary] = useState(null);
   const [error, setError] = useState(null);
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     const generateSummary = async () => {
@@ -29,10 +31,20 @@ const ReportSummary = ({ report }) => {
 
         setLoading(true);
         setError(null);
+        setProgress(10);
+
+        // Simulate progress for user feedback
+        let fakeProgress = 10;
+        const progressInterval = setInterval(() => {
+          fakeProgress += Math.floor(Math.random() * 10) + 5;
+          if (fakeProgress < 80) setProgress(fakeProgress);
+        }, 400);
 
         console.log("Starting summary generation for report:", report.id);
         const summaryText = await summarizePDF(report.downloadURL);
         setSummary(summaryText);
+        setProgress(100);
+        clearInterval(progressInterval);
 
         // Cache the summary if we have a report ID
         if (report.id) {
@@ -41,6 +53,7 @@ const ReportSummary = ({ report }) => {
       } catch (err) {
         console.error('Error generating summary:', err);
         setError(err.message || 'Unable to generate summary. Please try again later.');
+        setProgress(0);
       } finally {
         setLoading(false);
       }
@@ -64,11 +77,14 @@ const ReportSummary = ({ report }) => {
   if (loading) {
     return (
       <Card className="p-6">
-        <div className="flex flex-col items-center justify-center py-8">
+        <div className="flex flex-col items-center justify-center py-8 w-full">
           <Loader size="large" />
           <p className="mt-4 text-gray-500 dark:text-gray-400">
             Analyzing your medical report...
           </p>
+          <div className="w-full mt-6">
+            <ProgressBar progress={progress} label="Analyzing..." />
+          </div>
         </div>
       </Card>
     );
@@ -124,4 +140,4 @@ const ReportSummary = ({ report }) => {
   );
 };
 
-export default ReportSummary; 
+export default ReportSummary;
