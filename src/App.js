@@ -4,6 +4,7 @@ import { AuthProvider } from './context/AuthContext';
 import { ThemeProvider } from './context/ThemeContext';
 import routes from './routes';
 import './App.css';
+import { Analytics } from '@vercel/analytics/react';
 
 // App Router component that renders routes
 const AppRouter = () => {
@@ -31,6 +32,7 @@ function App() {
       <AuthProvider>
         <ThemeProvider>
           <AppRouter />
+          <Analytics />
         </ThemeProvider>
       </AuthProvider>
     </BrowserRouter>
