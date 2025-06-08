@@ -364,6 +364,18 @@ const parseLabResults = (text) => {
         continue;
       }
     }
+    // --- NEW: Fallback line-by-line parser for inline test results ---
+    // Match lines like: TestName Value Unit ReferenceRange
+    const fallbackMatch = line.match(/^([A-Za-z0-9\-\/\(\)\s]+?)\s+([0-9.,]+)\s*([a-zA-Z%\/]+)?\s+([<>]?[0-9.,\-\s]+[a-zA-Z%\/]*)$/);
+    if (fallbackMatch) {
+      results.push({
+        name: fallbackMatch[1].trim(),
+        value: fallbackMatch[2].trim(),
+        unit: fallbackMatch[3] ? fallbackMatch[3].trim() : '',
+        normal: fallbackMatch[4].trim(),
+        category: currentSection || detectTestCategory(fallbackMatch[1])
+      });
+    }
     i++;
   }
   return results;
