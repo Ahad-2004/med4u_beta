@@ -6,9 +6,11 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const { extractText } = require('./services/ocrService');
+const cors = require('cors');
 
 app.use(bodyParser.json());
 app.use('/api', summarizeRoute);
+app.use(cors()); // Enable CORS for all origins
 
 // Set up multer for file uploads
 const upload = multer({ dest: 'uploads/' });
