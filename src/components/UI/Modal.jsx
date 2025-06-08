@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { XMarkIcon } from '@heroicons/react/24/outline';
 
 const Modal = ({ 
@@ -9,6 +9,8 @@ const Modal = ({
   size = 'default',
   showCloseButton = true 
 }) => {
+  const modalRef = useRef(null);
+
   // Handle ESC key press to close modal
   useEffect(() => {
     const handleEscKey = (event) => {
@@ -16,73 +18,46 @@ const Modal = ({
         onClose();
       }
     };
-    
     window.addEventListener('keydown', handleEscKey);
-    
-    // Prevent body scrolling when modal is open
     if (isOpen) {
       document.body.style.overflow = 'hidden';
+      // Focus trap
+      setTimeout(() => {
+        if (modalRef.current) modalRef.current.focus();
+      }, 50);
     }
-    
     return () => {
       window.removeEventListener('keydown', handleEscKey);
       document.body.style.overflow = 'auto';
     };
   }, [isOpen, onClose]);
-  
-  // If modal is not open, don't render anything
+
   if (!isOpen) return null;
-  
-  // Determine width based on size prop
-  let modalWidth = 'max-w-lg'; // default
-  if (size === 'small') {
-    modalWidth = 'max-w-md';
-  } else if (size === 'large') {
-    modalWidth = 'max-w-2xl';
-  } else if (size === 'xl') {
-    modalWidth = 'max-w-4xl';
-  } else if (size === 'full') {
-    modalWidth = 'max-w-7xl';
-  }
-  
+
+  let modalWidth = 'max-w-lg';
+  if (size === 'small') modalWidth = 'max-w-md';
+  else if (size === 'large') modalWidth = 'max-w-2xl';
+  else if (size === 'xl') modalWidth = 'max-w-4xl';
+  else if (size === 'full') modalWidth = 'max-w-7xl';
+
   return (
-    <div className="fixed inset-0 z-50 overflow-y-auto" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-      {/* Background overlay */}
-      <div 
-        className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" 
-        aria-hidden="true"
-        onClick={onClose}
-      ></div>
-      
-      <div className="flex min-h-screen items-center justify-center p-4 text-center sm:p-0">
-        {/* Modal panel */}
-        <div 
-          className={`relative transform overflow-hidden rounded-lg bg-white dark:bg-gray-800 text-left shadow-xl transition-all sm:my-8 sm:w-full ${modalWidth}`}
-          onClick={(e) => e.stopPropagation()}
-        >
-          {/* Header */}
-          <div className="border-b border-gray-200 dark:border-gray-700 px-4 py-3 flex justify-between items-center">
-            <h3 className="text-lg font-medium text-gray-900 dark:text-white" id="modal-title">
-              {title}
-            </h3>
-            
-            {showCloseButton && (
-              <button
-                type="button"
-                className="rounded-md bg-white dark:bg-gray-800 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-primary-500"
-                onClick={onClose}
-              >
-                <span className="sr-only">Close</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            )}
-          </div>
-          
-          {/* Content */}
-          <div className="px-4 py-5 sm:p-6">
-            {children}
-          </div>
-        </div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+      <div
+        ref={modalRef}
+        className={`relative w-full ${modalWidth} mx-4 my-8 bg-white dark:bg-gray-900 rounded-xl shadow-xl outline-none focus:outline-none transition-all duration-200 animate-fadeInUp`}
+        tabIndex={-1}
+      >
+        {showCloseButton && (
+          <button
+            onClick={onClose}
+            className="absolute top-4 right-4 p-2 rounded-full bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-primary-500"
+            aria-label="Close modal"
+          >
+            <XMarkIcon className="h-5 w-5 text-gray-600 dark:text-gray-300" />
+          </button>
+        )}
+        {title && <div className="px-6 pt-6 pb-2 text-xl font-bold text-gray-900 dark:text-white" id="modal-title">{title}</div>}
+        <div className="px-6 pb-6 pt-2">{children}</div>
       </div>
     </div>
   );
@@ -90,4 +65,5 @@ const Modal = ({
 
 export default Modal;
 
- 
+// Add fadeIn and fadeInUp animations to your Tailwind config if not present.
+
