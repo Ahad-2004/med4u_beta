@@ -18,10 +18,11 @@ async function renderPageToImage(pdf, pageNum) {
 }
 
 // Helper: POST an image blob to the backend OCR API
+const OCR_API_URL = "https://med4u.onrender.com/ocr"; // <-- Update this to your Render backend URL
 async function ocrImageWithBackend(imageBlob) {
   const formData = new FormData();
   formData.append('file', imageBlob, 'page.png');
-  const response = await fetch('/api/ocr', {
+  const response = await fetch(OCR_API_URL, {
     method: 'POST',
     body: formData
   });
