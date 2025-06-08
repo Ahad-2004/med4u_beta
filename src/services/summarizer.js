@@ -1,34 +1,7 @@
 // This service connects to an external AI API to generate summaries of medical reports
 // We'll use the HuggingFace Inference API which has a generous free tier
 
-import { HUGGINGFACE_API_URL, HUGGINGFACE_API_KEY } from '../config/config';
 import { extractTextFromPDF } from './ocrService';
-
-// OpenAI API configuration
-const OPENAI_API_KEY = process.env.REACT_APP_OPENAI_API_KEY || '';
-const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
-
-// HuggingFace API configuration
-const HUGGINGFACE_SUMMARIZATION_URL = 'https://api-inference.huggingface.co/models/facebook/bart-large-cnn';
-const HUGGINGFACE_MEDICAL_URL = 'https://api-inference.huggingface.co/models/medical-ner-proj/medical-ner';
-
-const MEDICAL_SUMMARY_PROMPT = `You are a medical report summarizer. Analyze the following medical lab report and create a structured summary with these sections:
-
-1. 🩺 Key Findings
-   - List any abnormal results with their values and reference ranges
-   - Highlight critical or concerning values
-
-2. ✅ Normal Results
-   - List sections/tests that are within normal ranges
-
-3. 📌 Recommendations
-   - Provide actionable recommendations based on the findings
-   - Include any necessary follow-up actions
-
-Format the summary with clear sections and bullet points. Use medical terminology appropriately but ensure it's understandable for patients.
-
-Here's the medical report text:
-`;
 
 // Function to summarize text using a local extractive summarizer
 export const summarizeText = async (text, maxLength = 250) => {
@@ -673,5 +646,3 @@ const generateRecommendations = (testResults) => {
   
   return recommendations;
 };
-
-// --- OpenAI GPT Summarization ---
