@@ -98,8 +98,8 @@ const ReportSummary = ({ report }) => {
           <p>{error}</p>
           <ul className="mt-2 text-sm text-gray-600 dark:text-gray-300 list-disc list-inside">
             <li>Check if the PDF is clear and contains readable text.</li>
-            <li>Ensure your API key is set and valid.</li>
-            <li>If you hit a rate limit, wait a few minutes and try again.</li>
+            <li>If the summary is blank, the report may be a scanned image with poor OCR results.</li>
+            <li>If you see repeated errors, try a different file or contact support.</li>
             <li>See the browser console for technical details.</li>
           </ul>
         </div>
