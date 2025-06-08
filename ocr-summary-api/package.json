@@ -1,0 +1,20 @@
+{
+  "name": "ocr-summary-api",
+  "version": "1.0.0",
+  "description": "OCR and summary API using Tesseract.js",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^4.21.2",
+    "multer": "^1.4.5-lts.1",
+    "openai": "^4.97.0",
+    "tesseract.js": "^4.1.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
