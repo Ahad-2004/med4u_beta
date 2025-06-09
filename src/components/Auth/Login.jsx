@@ -36,16 +36,13 @@ const Login = () => {
 	useEffect(() => {
 		let cleanup = () => {};
 		let vantaInstance = null;
-		let threeObj = null;
 
 		import('three').then((THREE) => {
 			window.THREE = THREE;
-			threeObj = THREE;
-			import('vanta/dist/vanta.birds.min').then((VANTA) => {
+			import('vanta/src/vanta.birds').then((VANTA) => {
 				if (!vantaEffect.current && vantaRef.current) {
 					vantaInstance = VANTA.default({
 						el: vantaRef.current,
-						THREE: threeObj,
 						mouseControls: true,
 						touchControls: true,
 						gyroControls: false,
