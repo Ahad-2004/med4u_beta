@@ -36,13 +36,16 @@ const Login = () => {
 	useEffect(() => {
 		let cleanup = () => {};
 		let vantaInstance = null;
-		import('vanta/dist/vanta.birds.min').then((VANTA) => {
-			import('three').then((THREE) => {
+		let threeObj = null;
+
+		import('three').then((THREE) => {
+			window.THREE = THREE;
+			threeObj = THREE;
+			import('vanta/dist/vanta.birds.min').then((VANTA) => {
 				if (!vantaEffect.current && vantaRef.current) {
-					// Use VANTA.default for birds effect
 					vantaInstance = VANTA.default({
 						el: vantaRef.current,
-						THREE,
+						THREE: threeObj,
 						mouseControls: true,
 						touchControls: true,
 						gyroControls: false,
@@ -55,6 +58,7 @@ const Login = () => {
 				}
 			});
 		});
+
 		cleanup = () => {
 			if (vantaEffect.current) {
 				vantaEffect.current.destroy();
