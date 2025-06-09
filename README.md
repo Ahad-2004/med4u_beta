@@ -39,8 +39,8 @@ Med4U is a modern web app for managing personal medical records, uploading and s
 
 ## 🚀 Live Demo
 
-- **Frontend:** [med4u-frontend on Render](https://your-frontend-url.onrender.com)
-- **Backend (OCR API):** [med4u-backend on Render](https://your-backend-url.onrender.com)
+- **Frontend:** [med4u-frontend on Render]((https://med4u-frontend.onrender.com))
+- **Backend (OCR API):** [med4u-backend on Render]((https://med4u.onrender.com))
 
 ---
 
