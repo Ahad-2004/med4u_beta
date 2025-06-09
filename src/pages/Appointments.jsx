@@ -61,7 +61,9 @@ const Appointments = () => {
                   <div className="text-sm text-gray-500">{app.date} at {app.time}</div>
                   {app.notes && <div className="text-xs text-gray-400 mt-1">{app.notes}</div>}
                 </div>
-                <div className="text-xs text-gray-400 mt-2 md:mt-0">Booked on {new Date(app.createdAt).toLocaleDateString()}</div>
+                <div className="text-xs text-gray-400 mt-2 md:mt-0">
+                  Booked on {app.createdAt ? new Date(app.createdAt).toLocaleDateString() : '—'}
+                </div>
               </li>
             )) : <li className="text-gray-500">No appointments yet.</li>}
           </ul>
