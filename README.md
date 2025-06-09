@@ -69,42 +69,7 @@ med4u_beta/
 - Node.js 16.x or higher
 - npm or yarn
 
-### Installation
 
-1. **Clone the repository**
-   ```powershell
-   git clone https://github.com/yourusername/med4u.git
-   cd med4u_beta
-   ```
-2. **Install dependencies**
-   ```powershell
-   npm install
-   ```
-3. **Set up environment variables**
-   - Create a `.env` file in the root and add:
-     ```env
-     REACT_APP_FIREBASE_API_KEY=your_firebase_api_key
-     REACT_APP_FIREBASE_AUTH_DOMAIN=your_firebase_auth_domain
-     REACT_APP_FIREBASE_PROJECT_ID=your_firebase_project_id
-     REACT_APP_FIREBASE_STORAGE_BUCKET=your_firebase_storage_bucket
-     REACT_APP_FIREBASE_MESSAGING_SENDER_ID=your_firebase_messaging_sender_id
-     REACT_APP_FIREBASE_APP_ID=your_firebase_app_id
-     REACT_APP_HUGGINGFACE_API_KEY=your_huggingface_api_key
-     REACT_APP_OCR_API_URL=https://your-backend-url.onrender.com/api/ocr
-     ```
-4. **Start the frontend**
-   ```powershell
-   npm start
-   ```
-5. **Start the backend (OCR API)**
-   ```powershell
-   cd ocr-summary-api
-   npm install
-   npm start
-   ```
-6. **Open your browser** and go to `http://localhost:3000`
-
----
 
 ## ☁️ Deployment
 
@@ -124,21 +89,6 @@ Other supported platforms: Netlify, Vercel, Firebase Hosting, GitHub Pages (fron
 - Enable Email/Password sign-in in Firebase Auth
 - Set up Firestore collections: `users`, `medications`, `cases`, `conditions`, `reports`
 - Configure Firebase Storage security rules
-
----
-
-## 📁 Example .env
-
-```env
-REACT_APP_FIREBASE_API_KEY=xxx
-REACT_APP_FIREBASE_AUTH_DOMAIN=xxx
-REACT_APP_FIREBASE_PROJECT_ID=xxx
-REACT_APP_FIREBASE_STORAGE_BUCKET=xxx
-REACT_APP_FIREBASE_MESSAGING_SENDER_ID=xxx
-REACT_APP_FIREBASE_APP_ID=xxx
-REACT_APP_HUGGINGFACE_API_KEY=xxx
-REACT_APP_OCR_API_URL=https://your-backend-url.onrender.com/api/ocr
-```
 
 ---
 
