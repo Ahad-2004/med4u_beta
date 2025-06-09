@@ -34,12 +34,12 @@ const Login = () => {
 	const vantaEffect = useRef(null);
 
 	useEffect(() => {
-		// Dynamically import Vanta and three.js for SSR safety
 		let cleanup = () => {};
+		let vantaInstance = null;
 		import('vanta/dist/vanta.birds.min').then((VANTA) => {
 			import('three').then((THREE) => {
 				if (!vantaEffect.current && vantaRef.current) {
-					vantaEffect.current = VANTA.default({
+					vantaInstance = VANTA.BIRDS({
 						el: vantaRef.current,
 						THREE,
 						mouseControls: true,
@@ -50,6 +50,7 @@ const Login = () => {
 						scale: 1.0,
 						scaleMobile: 1.0,
 					});
+					vantaEffect.current = vantaInstance;
 				}
 			});
 		});
