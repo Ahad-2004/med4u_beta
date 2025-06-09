@@ -4,141 +4,177 @@ import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
 
+const features = [
+	{
+		title: 'AI-Powered Summaries',
+		desc: 'Upload lab reports and get instant, easy-to-understand summaries with actionable recommendations.',
+	},
+	{
+		title: 'Appointment Scheduling',
+		desc: 'Book, track, and manage your medical appointments in one place.',
+	},
+	{
+		title: 'Lab Result Trends',
+		desc: 'Visualize your health data over time with beautiful, interactive charts.',
+	},
+	{
+		title: 'Secure & Private',
+		desc: 'Your data is encrypted and never shared. You are always in control.',
+	},
+];
+
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false);
-  
-  const { login } = useAuth();
-  const navigate = useNavigate();
+	const [email, setEmail] = useState('');
+	const [password, setPassword] = useState('');
+	const [error, setError] = useState('');
+	const [loading, setLoading] = useState(false);
+	const { login } = useAuth();
+	const navigate = useNavigate();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    
-    // Reset error
-    setError('');
-    
-    // Validate inputs
-    const safeEmail = sanitizeInput(email);
-    if (!safeEmail || !password) {
-      setError('Please enter both email and password.');
-      return;
-    }
-    
-    try {
-      setLoading(true);
-      await login(safeEmail, password);
-      navigate('/dashboard'); // Redirect to dashboard on success
-    } catch (err) {
-      setError(getErrorMessage(err.code));
-      setLoading(false);
-    }
-  };
-  
-  // Helper function to get user-friendly error messages
-  const getErrorMessage = (errorCode) => {
-    switch (errorCode) {
-      case 'auth/invalid-email':
-        return 'Invalid email address format.';
-      case 'auth/user-disabled':
-        return 'This account has been disabled.';
-      case 'auth/user-not-found':
-        return 'No account found with this email.';
-      case 'auth/wrong-password':
-        return 'Incorrect password.';
-      default:
-        return 'An error occurred during sign in. Please try again.';
-    }
-  };
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		setError('');
+		const safeEmail = sanitizeInput(email);
+		if (!safeEmail || !password) {
+			setError('Please enter both email and password.');
+			return;
+		}
+		try {
+			setLoading(true);
+			await login(safeEmail, password);
+			navigate('/dashboard');
+		} catch (err) {
+			setError(getErrorMessage(err.code));
+			setLoading(false);
+		}
+	};
 
-  return (
-    <div className="relative min-h-screen flex items-center justify-center">
-      <div className="login-bg"></div>
-      <div className="max-w-md w-full space-y-8 z-10 animate-fadeInUp">
-        <div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
-            Sign in to your account
-          </h2>
-          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-            Or{' '}
-            <Link to="/signup" className="font-medium text-primary-600 hover:text-primary-500">
-              create a new account
-            </Link>
-          </p>
-        </div>
+	const getErrorMessage = (errorCode) => {
+		switch (errorCode) {
+			case 'auth/invalid-email':
+				return 'Invalid email address format.';
+			case 'auth/user-disabled':
+				return 'This account has been disabled.';
+			case 'auth/user-not-found':
+				return 'No account found with this email.';
+			case 'auth/wrong-password':
+				return 'Incorrect password.';
+			default:
+				return 'An error occurred during sign in. Please try again.';
+		}
+	};
 
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          {error && (
-            <div className="rounded-md bg-red-50 p-4">
-              <div className="flex">
-                <div className="ml-3">
-                  <h3 className="text-sm font-medium text-red-800">{error}</h3>
-                </div>
-              </div>
-            </div>
-          )}
-
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
-                name="email"
-                type="email"
-                autoComplete="email"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-800 rounded-t-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
-                name="password"
-                type="password"
-                autoComplete="current-password"
-                required
-                className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-700 placeholder-gray-500 text-gray-900 dark:text-white dark:bg-gray-800 rounded-b-md focus:outline-none focus:ring-primary-500 focus:border-primary-500 focus:z-10 sm:text-sm"
-                placeholder="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="text-sm">
-              <Link to="/forgot-password" className="font-medium text-primary-600 hover:text-primary-500">
-                Forgot your password?
-              </Link>
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              disabled={loading}
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-primary-600 hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 disabled:opacity-50"
-            >
-              {loading ? (
-                <Loader size="small" color="white" />
-              ) : (
-                'Sign in'
-              )}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-  );
+	return (
+		<div className="relative min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
+			<div className="login-bg fixed inset-0"></div>
+			{/* Hero Section */}
+			<section className="relative flex flex-col items-center justify-center min-h-[80vh] pt-24 pb-16 px-4 z-10">
+				<div className="max-w-2xl text-center">
+					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg">
+						Med4U: Your Personal Medical Dashboard
+					</h1>
+					<p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8">
+						Upload, summarize, and track your health records with AI. Book
+						appointments, visualize trends, and take control of your medical
+						journey.
+					</p>
+				</div>
+				{/* Login Card (sticky on desktop, scrolls on mobile) */}
+				<div className="w-full max-w-md mx-auto bg-white/90 dark:bg-gray-900/90 rounded-xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-md">
+					<h2 className="text-2xl font-bold mb-2 text-center text-primary-700 dark:text-primary-300">
+						Sign in to Med4U
+					</h2>
+					<p className="mb-6 text-center text-gray-500 dark:text-gray-400">
+						Or{' '}
+						<Link
+							to="/signup"
+							className="font-medium text-primary-600 hover:text-primary-500"
+						>
+							create a new account
+						</Link>
+					</p>
+					<form className="space-y-5" onSubmit={handleSubmit}>
+						{error && (
+							<div className="rounded-md bg-red-50 p-3 text-red-800 text-sm">
+								{error}
+							</div>
+						)}
+						<input
+							id="email-address"
+							name="email"
+							type="email"
+							autoComplete="email"
+							required
+							className="input"
+							placeholder="Email address"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+						<input
+							id="password"
+							name="password"
+							type="password"
+							autoComplete="current-password"
+							required
+							className="input"
+							placeholder="Password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+						<div className="flex items-center justify-between">
+							<Link
+								to="/forgot-password"
+								className="text-sm font-medium text-primary-600 hover:text-primary-500"
+							>
+								Forgot your password?
+							</Link>
+						</div>
+						<button
+							type="submit"
+							disabled={loading}
+							className="btn btn-primary w-full"
+						>
+							{loading ? (
+								<Loader size="small" color="white" />
+							) : (
+								'Sign in'
+							)}
+						</button>
+					</form>
+				</div>
+			</section>
+			{/* Features Section */}
+			<section className="relative z-10 py-16 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-b border-gray-200 dark:border-gray-800">
+				<div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
+					{features.map((f, i) => (
+						<div
+							key={i}
+							className="flex flex-col items-center md:items-start text-center md:text-left"
+						>
+							<div className="mb-3">
+								<span className="inline-block p-3 rounded-full bg-primary-100 dark:bg-primary-900">
+									{/* Icon placeholder, you can add icons here */}
+									<span className="text-2xl">
+										{String.fromCodePoint(0x1F4DD + i)}
+									</span>
+								</span>
+							</div>
+							<h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-1">
+								{f.title}
+							</h3>
+							<p className="text-gray-600 dark:text-gray-300">
+								{f.desc}
+							</p>
+						</div>
+					))}
+				</div>
+			</section>
+			{/* Footer Section */}
+			<footer className="relative z-10 py-8 text-center text-gray-400 text-xs bg-transparent">
+				&copy; {new Date().getFullYear()} Med4U. All rights reserved.
+			</footer>
+		</div>
+	);
 };
 
 export default Login;
