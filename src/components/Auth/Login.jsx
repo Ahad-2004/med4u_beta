@@ -36,7 +36,7 @@ const Login = () => {
 	useEffect(() => {
 		// Dynamically import Vanta and three.js for SSR safety
 		let cleanup = () => {};
-		import('vanta/dist/vanta.waves.min').then((VANTA) => {
+		import('vanta/dist/vanta.birds.min').then((VANTA) => {
 			import('three').then((THREE) => {
 				if (!vantaEffect.current && vantaRef.current) {
 					vantaEffect.current = VANTA.default({
@@ -44,16 +44,11 @@ const Login = () => {
 						THREE,
 						mouseControls: true,
 						touchControls: true,
-						minHeight: 400.0,
+						gyroControls: false,
+						minHeight: 200.0,
 						minWidth: 200.0,
 						scale: 1.0,
 						scaleMobile: 1.0,
-						color: 0x2563eb,
-						shininess: 50.0,
-						waveHeight: 20.0,
-						waveSpeed: 0.7,
-						zoom: 1.1,
-						backgroundColor: 0xf7fafc,
 					});
 				}
 			});
