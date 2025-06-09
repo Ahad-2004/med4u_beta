@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
@@ -30,6 +30,42 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const { login } = useAuth();
 	const navigate = useNavigate();
+	const vantaRef = useRef(null);
+	const vantaEffect = useRef(null);
+
+	useEffect(() => {
+		// Dynamically import Vanta and three.js for SSR safety
+		let cleanup = () => {};
+		import('vanta/dist/vanta.waves.min').then((VANTA) => {
+			import('three').then((THREE) => {
+				if (!vantaEffect.current && vantaRef.current) {
+					vantaEffect.current = VANTA.default({
+						el: vantaRef.current,
+						THREE,
+						mouseControls: true,
+						touchControls: true,
+						minHeight: 400.0,
+						minWidth: 200.0,
+						scale: 1.0,
+						scaleMobile: 1.0,
+						color: 0x2563eb,
+						shininess: 50.0,
+						waveHeight: 20.0,
+						waveSpeed: 0.7,
+						zoom: 1.1,
+						backgroundColor: 0xf7fafc,
+					});
+				}
+			});
+		});
+		cleanup = () => {
+			if (vantaEffect.current) {
+				vantaEffect.current.destroy();
+				vantaEffect.current = null;
+			}
+		};
+		return cleanup;
+	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -66,11 +102,16 @@ const Login = () => {
 
 	return (
 		<div className="relative min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-			<div className="login-bg fixed inset-0"></div>
+			{/* Vanta.js Animated Background */}
+			<div
+				ref={vantaRef}
+				className="fixed inset-0 -z-10"
+				style={{ minHeight: '100vh', minWidth: '100vw' }}
+			></div>
 			{/* Hero Section */}
 			<section className="relative flex flex-col items-center justify-center min-h-[80vh] pt-24 pb-16 px-4 z-10">
 				<div className="max-w-2xl text-center">
-					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg">
+					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg tracking-tight">
 						Med4U: Your Personal Medical Dashboard
 					</h1>
 					<p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8">
@@ -79,8 +120,8 @@ const Login = () => {
 						journey.
 					</p>
 				</div>
-				{/* Login Card (sticky on desktop, scrolls on mobile) */}
-				<div className="w-full max-w-md mx-auto bg-white/90 dark:bg-gray-900/90 rounded-xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-md">
+				{/* Login Card (glassmorphic, floating) */}
+				<div className="w-full max-w-md mx-auto bg-white/70 dark:bg-gray-900/80 rounded-2xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-xl border border-white/30 dark:border-gray-700">
 					<h2 className="text-2xl font-bold mb-2 text-center text-primary-700 dark:text-primary-300">
 						Sign in to Med4U
 					</h2>
