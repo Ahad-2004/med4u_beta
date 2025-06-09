@@ -43,6 +43,7 @@ const Sidebar = () => {
     { name: 'Medical Cases', path: '/cases', icon: FolderIcon },
     { name: 'Important Conditions', path: '/conditions', icon: ExclamationTriangleIcon },
     { name: 'Reports', path: '/reports', icon: DocumentTextIcon },
+    { name: 'Appointments', path: '/appointments', icon: FolderIcon }, // Added Appointments
   ];
   
   const NavItem = ({ item, onClick }) => (
@@ -158,4 +159,4 @@ const Sidebar = () => {
   );
 };
 
-export default Sidebar; 
+export default Sidebar;

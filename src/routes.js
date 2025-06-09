@@ -72,6 +72,10 @@ const routes = [
         path: 'personal',
         element: <React.Suspense fallback={null}>{React.createElement(React.lazy(() => import('./pages/Personal')))}</React.Suspense>,
       },
+      {
+        path: 'appointments',
+        element: <React.Suspense fallback={null}>{React.createElement(React.lazy(() => import('./pages/Appointments')))}</React.Suspense>,
+      },
     ],
   },
   {
@@ -80,4 +84,4 @@ const routes = [
   },
 ];
 
-export default routes; 
+export default routes;
