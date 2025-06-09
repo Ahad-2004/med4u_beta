@@ -39,7 +39,8 @@ const Login = () => {
 		import('vanta/dist/vanta.birds.min').then((VANTA) => {
 			import('three').then((THREE) => {
 				if (!vantaEffect.current && vantaRef.current) {
-					vantaInstance = VANTA.BIRDS({
+					// Use VANTA.default for birds effect
+					vantaInstance = VANTA.default({
 						el: vantaRef.current,
 						THREE,
 						mouseControls: true,
