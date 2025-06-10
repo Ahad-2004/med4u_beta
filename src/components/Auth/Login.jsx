@@ -3,8 +3,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
-import BIRDS from 'vanta/src/vanta.birds';
 import * as THREE from 'three';
+if (typeof window !== 'undefined') {
+  window.THREE = THREE;
+}
+import BIRDS from 'vanta/dist/vanta.birds.min';
 
 const features = [
 	{
@@ -37,7 +40,6 @@ const Login = () => {
 
 	useEffect(() => {
 		let vantaInstance = null;
-		window.THREE = THREE;
 		if (!vantaEffect.current && vantaRef.current) {
 			vantaInstance = BIRDS({
 				el: vantaRef.current,
