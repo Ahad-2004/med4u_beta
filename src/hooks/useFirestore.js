@@ -23,7 +23,6 @@ export const useFirestore = (collectionName) => {
   const getDocuments = async (conditions = [], sortBy = null) => {
     setLoading(true);
     setError(null);
-    
     try {
       // Collect all constraints
       let constraints = [];
@@ -38,11 +37,10 @@ export const useFirestore = (collectionName) => {
       const q = constraints.length > 0
         ? query(collection(db, collectionName), ...constraints)
         : collection(db, collectionName);
-      
-      console.log('Fetching documents with query:', q);
+      console.log('[Firestore] Fetching documents from:', collectionName);
+      console.log('[Firestore] Query constraints:', constraints);
       const querySnapshot = await getDocs(q);
-      console.log('Query snapshot:', querySnapshot);
-      
+      console.log('[Firestore] Query snapshot:', querySnapshot);
       const docs = querySnapshot.docs.map(doc => {
         const data = doc.data();
         // Convert Firestore timestamps to ISO strings
@@ -54,19 +52,17 @@ export const useFirestore = (collectionName) => {
           }
           return acc;
         }, {});
-        
         return {
           id: doc.id,
           ...processedData
         };
       });
-      
-      console.log('Processed documents:', docs);
+      console.log('[Firestore] Processed documents:', docs);
       setDocuments(docs);
       setLoading(false);
       return docs;
     } catch (err) {
-      console.error('Error getting documents: ', err);
+      console.error('[Firestore] Error getting documents:', err);
       setError(err.message);
       setLoading(false);
       throw err;

@@ -6,6 +6,14 @@ import Card from '../components/UI/Card';
 const Appointments = () => {
   const { currentUser } = useAuth();
   const { documents: appointments, loading, error, getDocuments, addDocument } = useFirestore('appointments');
+  
+  // Log appointments state for debugging
+  useEffect(() => {
+    console.log('[Appointments] appointments:', appointments);
+    console.log('[Appointments] loading:', loading);
+    console.log('[Appointments] error:', error);
+  }, [appointments, loading, error]);
+
   const [form, setForm] = useState({ date: '', time: '', doctor: '', notes: '' });
   const [submitting, setSubmitting] = useState(false);
   const [success, setSuccess] = useState('');
