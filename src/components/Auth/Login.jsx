@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
+import TextPressure from './TextPressure';
 
 const features = [
 	{
@@ -30,42 +31,6 @@ const Login = () => {
 	const [loading, setLoading] = useState(false);
 	const { login } = useAuth();
 	const navigate = useNavigate();
-	const vantaRef = useRef(null);
-	const vantaEffect = useRef(null);
-
-	useEffect(() => {
-		let vantaInstance = null;
-		let isMounted = true;
-
-		import('three').then((THREE) => {
-			if (typeof window !== 'undefined') {
-				window.THREE = THREE;
-			}
-			import('vanta/dist/vanta.birds.min').then((VANTA) => {
-				if (isMounted && !vantaEffect.current && vantaRef.current) {
-					vantaInstance = VANTA.default({
-						el: vantaRef.current,
-						mouseControls: true,
-						touchControls: true,
-						gyroControls: false,
-						minHeight: 200.0,
-						minWidth: 200.0,
-						scale: 1.0,
-						scaleMobile: 1.0,
-					});
-					vantaEffect.current = vantaInstance;
-				}
-			});
-		});
-
-		return () => {
-			isMounted = false;
-			if (vantaEffect.current) {
-				vantaEffect.current.destroy();
-				vantaEffect.current = null;
-			}
-		};
-	}, []);
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
@@ -102,12 +67,30 @@ const Login = () => {
 
 	return (
 		<div className="relative min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-			{/* Vanta.js Animated Background */}
+			{/* Animated TextPressure Background */}
 			<div
-				ref={vantaRef}
-				className="fixed inset-0 -z-10"
-				style={{ minHeight: '100vh', minWidth: '100vw' }}
-			></div>
+				style={{
+					position: 'fixed',
+					inset: 0,
+					zIndex: -10,
+					height: '300px',
+					width: '100vw',
+					background: 'transparent',
+				}}
+			>
+				<TextPressure
+					text="Welcome to Med4U!"
+					flex={true}
+					alpha={false}
+					stroke={false}
+					width={true}
+					weight={true}
+					italic={true}
+					textColor="#2563eb"
+					strokeColor="#ff0000"
+					minFontSize={36}
+				/>
+			</div>
 			{/* Hero Section */}
 			<section className="relative flex flex-col items-center justify-center min-h-[80vh] pt-24 pb-16 px-4 z-10">
 				<div className="max-w-2xl text-center">
