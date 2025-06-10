@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
+import BIRDS from 'vanta/src/vanta.birds';
+import * as THREE from 'three';
 
 const features = [
 	{
@@ -34,35 +36,27 @@ const Login = () => {
 	const vantaEffect = useRef(null);
 
 	useEffect(() => {
-		let cleanup = () => {};
 		let vantaInstance = null;
-
-		import('three').then((THREE) => {
-			window.THREE = THREE;
-			import('vanta/src/vanta.birds').then((VANTA) => {
-				if (!vantaEffect.current && vantaRef.current) {
-					vantaInstance = VANTA.default({
-						el: vantaRef.current,
-						mouseControls: true,
-						touchControls: true,
-						gyroControls: false,
-						minHeight: 200.0,
-						minWidth: 200.0,
-						scale: 1.0,
-						scaleMobile: 1.0,
-					});
-					vantaEffect.current = vantaInstance;
-				}
+		window.THREE = THREE;
+		if (!vantaEffect.current && vantaRef.current) {
+			vantaInstance = BIRDS({
+				el: vantaRef.current,
+				mouseControls: true,
+				touchControls: true,
+				gyroControls: false,
+				minHeight: 200.0,
+				minWidth: 200.0,
+				scale: 1.0,
+				scaleMobile: 1.0,
 			});
-		});
-
-		cleanup = () => {
+			vantaEffect.current = vantaInstance;
+		}
+		return () => {
 			if (vantaEffect.current) {
 				vantaEffect.current.destroy();
 				vantaEffect.current = null;
 			}
 		};
-		return cleanup;
 	}, []);
 
 	const handleSubmit = async (e) => {
