@@ -25,19 +25,19 @@ export const useFirestore = (collectionName) => {
     setError(null);
     
     try {
-      let q = collection(db, collectionName);
-      
-      // Apply where conditions if provided
+      // Collect all constraints
+      let constraints = [];
       if (conditions && conditions.length > 0) {
         conditions.forEach(condition => {
-          q = query(q, where(condition.field, condition.operator, condition.value));
+          constraints.push(where(condition.field, condition.operator, condition.value));
         });
       }
-      
-      // Apply orderBy if provided
       if (sortBy) {
-        q = query(q, orderBy(sortBy.field, sortBy.direction || 'asc'));
+        constraints.push(orderBy(sortBy.field, sortBy.direction || 'asc'));
       }
+      const q = constraints.length > 0
+        ? query(collection(db, collectionName), ...constraints)
+        : collection(db, collectionName);
       
       console.log('Fetching documents with query:', q);
       const querySnapshot = await getDocs(q);
