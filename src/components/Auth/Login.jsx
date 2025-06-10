@@ -70,11 +70,12 @@ const Login = () => {
 			{/* Animated TextPressure Background */}
 			<div
 				style={{
-					position: 'fixed',
-					inset: 0,
-					zIndex: -10,
+					position: 'absolute', // changed from fixed
+					top: 0,
+					left: 0,
+					width: '100%',
 					height: '300px',
-					width: '100vw',
+					zIndex: 0, // ensure it's above the background but below content
 					background: 'transparent',
 				}}
 			>
