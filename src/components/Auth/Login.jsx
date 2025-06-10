@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
-import AnimatedHeadline from './AnimatedHeadline';
+import TextPressure from './TextPressure';
 
 const features = [
 	{
@@ -83,12 +83,26 @@ const Login = () => {
 					overflow: 'hidden',
 				}}
 			>
-				<AnimatedHeadline text="Welcome to Med4U!" />
+				<TextPressure
+					text="Welcome to Med4U!"
+					fontFamily="Compressa VF"
+					fontUrl="https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2"
+					width={true}
+					weight={true}
+					italic={true}
+					alpha={false}
+					flex={true}
+					stroke={false}
+					scale={false}
+					textColor="#2563eb"
+					className="text-5xl md:text-7xl font-extrabold text-center tracking-widest mb-4 drop-shadow-xl"
+					minFontSize={36}
+				/>
 			</div>
 			{/* Hero Section */}
 			<section className="relative flex flex-col items-center justify-center min-h-[60vh] pt-32 pb-10 px-4 z-10">
-				<div className="max-w-2xl text-center mt-2">
-					<h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg tracking-tight">
+				<div className="max-w-2xl text-center">
+					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg tracking-tight">
 						Med4U: Your Personal Medical Dashboard
 					</h1>
 					<p className="text-lg md:text-xl text-gray-700 dark:text-gray-200 mb-8">
@@ -98,7 +112,7 @@ const Login = () => {
 					</p>
 				</div>
 				{/* Login Card (glassmorphic, floating, centered) */}
-				<div className="w-full max-w-md mx-auto bg-white/70 dark:bg-gray-900/80 rounded-3xl shadow-2xl p-10 z-20 mt-10 animate-fadeInUp backdrop-blur-2xl border border-white/30 dark:border-gray-700 flex flex-col items-center justify-center transition-all duration-300 hover:shadow-3xl">
+				<div className="w-full max-w-md mx-auto bg-white/80 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 z-20 mt-8 animate-fadeInUp backdrop-blur-2xl border border-white/40 dark:border-gray-700 flex flex-col items-center justify-center">
 					<h2 className="text-2xl font-bold mb-2 text-center text-primary-700 dark:text-primary-300">
 						Sign in to Med4U
 					</h2>
@@ -123,7 +137,7 @@ const Login = () => {
 							type="email"
 							autoComplete="email"
 							required
-							className="input bg-white/95 dark:bg-gray-800/90 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400 rounded-xl px-4 py-3 text-base shadow-sm transition-all duration-200"
+							className="input bg-white/90 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400"
 							placeholder="Email address"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -134,7 +148,7 @@ const Login = () => {
 							type="password"
 							autoComplete="current-password"
 							required
-							className="input bg-white/95 dark:bg-gray-800/90 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400 rounded-xl px-4 py-3 text-base shadow-sm transition-all duration-200"
+							className="input bg-white/90 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400"
 							placeholder="Password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -150,7 +164,7 @@ const Login = () => {
 						<button
 							type="submit"
 							disabled={loading}
-							className="btn btn-primary w-full shadow-lg hover:scale-[1.03] transition-transform duration-200 rounded-xl text-lg font-semibold py-3 mt-2"
+							className="btn btn-primary w-full shadow-md hover:scale-[1.02] transition-transform duration-150"
 						>
 							{loading ? (
 								<Loader size="small" color="white" />

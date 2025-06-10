@@ -1,16 +1,16 @@
 import React, { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 const AnimatedHeadline = ({ text }) => {
   const headlineRef = useRef(null);
 
   useEffect(() => {
     if (headlineRef.current) {
-      anime({
+      anime.default({
         targets: headlineRef.current.querySelectorAll('.letter'),
         translateY: [50, 0],
         opacity: [0, 1],
-        delay: anime.stagger(60),
+        delay: anime.default.stagger(60),
         easing: 'easeOutExpo',
         duration: 1200,
       });
