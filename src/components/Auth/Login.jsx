@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
-import TextPressure from './TextPressure';
+import AnimatedHeadline from './AnimatedHeadline';
 
 const features = [
 	{
@@ -67,35 +67,23 @@ const Login = () => {
 
 	return (
 		<div className="relative min-h-screen bg-gray-50 dark:bg-gray-900 overflow-x-hidden">
-			{/* Animated TextPressure Background */}
+			{/* Animated Anime.js Headline Background */}
 			<div
 				style={{
 					position: 'absolute',
 					top: 0,
 					left: 0,
 					width: '100%',
-					height: '220px', // reduce height for less overlap
+					height: '220px',
 					zIndex: 0,
-					background: 'linear-gradient(90deg, #e0e7ff 0%, #f7fafc 100%)', // subtle gradient
+					background: 'linear-gradient(90deg, #e0e7ff 0%, #f7fafc 100%)',
 					display: 'flex',
 					alignItems: 'center',
 					justifyContent: 'center',
 					overflow: 'hidden',
 				}}
 			>
-				<TextPressure
-					text="Welcome to Med4U!"
-					flex={true}
-					alpha={false}
-					stroke={false}
-					width={true}
-					weight={true}
-					italic={true}
-					textColor="#2563eb"
-					strokeColor="#ff0000"
-					minFontSize={48}
-					className="drop-shadow-xl"
-				/>
+				<AnimatedHeadline text="Welcome to Med4U!" />
 			</div>
 			{/* Hero Section */}
 			<section className="relative flex flex-col items-center justify-center min-h-[60vh] pt-32 pb-10 px-4 z-10">
@@ -109,8 +97,8 @@ const Login = () => {
 						journey.
 					</p>
 				</div>
-				{/* Login Card (glassmorphic, floating) */}
-				<div className="w-full max-w-md mx-auto bg-white/80 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-2xl border border-white/40 dark:border-gray-700">
+				{/* Login Card (glassmorphic, floating, centered) */}
+				<div className="w-full max-w-md mx-auto bg-white/80 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 z-20 mt-8 animate-fadeInUp backdrop-blur-2xl border border-white/40 dark:border-gray-700 flex flex-col items-center justify-center">
 					<h2 className="text-2xl font-bold mb-2 text-center text-primary-700 dark:text-primary-300">
 						Sign in to Med4U
 					</h2>
@@ -123,7 +111,7 @@ const Login = () => {
 							create a new account
 						</Link>
 					</p>
-					<form className="space-y-5" onSubmit={handleSubmit}>
+					<form className="space-y-5 w-full" onSubmit={handleSubmit}>
 						{error && (
 							<div className="rounded-md bg-red-50 p-3 text-red-800 text-sm">
 								{error}
