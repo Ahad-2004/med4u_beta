@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import anime from 'animejs';
+import * as anime from 'animejs';
 
 const AnimatedHeadline = ({ text }) => {
   const headlineRef = useRef(null);
