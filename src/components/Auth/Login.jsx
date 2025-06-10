@@ -70,13 +70,17 @@ const Login = () => {
 			{/* Animated TextPressure Background */}
 			<div
 				style={{
-					position: 'absolute', // changed from fixed
+					position: 'absolute',
 					top: 0,
 					left: 0,
 					width: '100%',
-					height: '300px',
-					zIndex: 0, // ensure it's above the background but below content
-					background: 'transparent',
+					height: '220px', // reduce height for less overlap
+					zIndex: 0,
+					background: 'linear-gradient(90deg, #e0e7ff 0%, #f7fafc 100%)', // subtle gradient
+					display: 'flex',
+					alignItems: 'center',
+					justifyContent: 'center',
+					overflow: 'hidden',
 				}}
 			>
 				<TextPressure
@@ -89,11 +93,12 @@ const Login = () => {
 					italic={true}
 					textColor="#2563eb"
 					strokeColor="#ff0000"
-					minFontSize={36}
+					minFontSize={48}
+					className="drop-shadow-xl"
 				/>
 			</div>
 			{/* Hero Section */}
-			<section className="relative flex flex-col items-center justify-center min-h-[80vh] pt-24 pb-16 px-4 z-10">
+			<section className="relative flex flex-col items-center justify-center min-h-[60vh] pt-32 pb-10 px-4 z-10">
 				<div className="max-w-2xl text-center">
 					<h1 className="text-4xl md:text-5xl font-extrabold text-gray-900 dark:text-white mb-4 drop-shadow-lg tracking-tight">
 						Med4U: Your Personal Medical Dashboard
@@ -105,7 +110,7 @@ const Login = () => {
 					</p>
 				</div>
 				{/* Login Card (glassmorphic, floating) */}
-				<div className="w-full max-w-md mx-auto bg-white/70 dark:bg-gray-900/80 rounded-2xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-xl border border-white/30 dark:border-gray-700">
+				<div className="w-full max-w-md mx-auto bg-white/80 dark:bg-gray-900/90 rounded-2xl shadow-2xl p-8 z-20 mt-8 md:mt-0 md:absolute md:right-12 md:top-1/2 md:-translate-y-1/2 animate-fadeInUp backdrop-blur-2xl border border-white/40 dark:border-gray-700">
 					<h2 className="text-2xl font-bold mb-2 text-center text-primary-700 dark:text-primary-300">
 						Sign in to Med4U
 					</h2>
@@ -130,7 +135,7 @@ const Login = () => {
 							type="email"
 							autoComplete="email"
 							required
-							className="input"
+							className="input bg-white/90 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400"
 							placeholder="Email address"
 							value={email}
 							onChange={(e) => setEmail(e.target.value)}
@@ -141,7 +146,7 @@ const Login = () => {
 							type="password"
 							autoComplete="current-password"
 							required
-							className="input"
+							className="input bg-white/90 dark:bg-gray-800/80 border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-primary-400"
 							placeholder="Password"
 							value={password}
 							onChange={(e) => setPassword(e.target.value)}
@@ -157,7 +162,7 @@ const Login = () => {
 						<button
 							type="submit"
 							disabled={loading}
-							className="btn btn-primary w-full"
+							className="btn btn-primary w-full shadow-md hover:scale-[1.02] transition-transform duration-150"
 						>
 							{loading ? (
 								<Loader size="small" color="white" />
@@ -169,7 +174,7 @@ const Login = () => {
 				</div>
 			</section>
 			{/* Features Section */}
-			<section className="relative z-10 py-16 px-4 bg-white/80 dark:bg-gray-900/80 backdrop-blur-md border-t border-b border-gray-200 dark:border-gray-800">
+			<section className="relative z-10 py-16 px-4 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-t border-b border-gray-200 dark:border-gray-800">
 				<div className="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-10">
 					{features.map((f, i) => (
 						<div
@@ -177,8 +182,7 @@ const Login = () => {
 							className="flex flex-col items-center md:items-start text-center md:text-left"
 						>
 							<div className="mb-3">
-								<span className="inline-block p-3 rounded-full bg-primary-100 dark:bg-primary-900">
-									{/* Icon placeholder, you can add icons here */}
+								<span className="inline-block p-3 rounded-full bg-primary-100 dark:bg-primary-900 shadow-md">
 									<span className="text-2xl">
 										{String.fromCodePoint(0x1F4DD + i)}
 									</span>
