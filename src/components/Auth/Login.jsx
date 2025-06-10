@@ -3,8 +3,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/useAuth';
 import Loader from '../UI/Loader';
 import { sanitizeInput } from '../../utils/sanitize';
-import * as THREE from 'three';
-import BIRDS from 'vanta/dist/vanta.birds.min';
 
 const features = [
 	{
@@ -37,23 +35,31 @@ const Login = () => {
 
 	useEffect(() => {
 		let vantaInstance = null;
-		if (typeof window !== 'undefined') {
-			window.THREE = THREE;
-		}
-		if (!vantaEffect.current && vantaRef.current) {
-			vantaInstance = BIRDS({
-				el: vantaRef.current,
-				mouseControls: true,
-				touchControls: true,
-				gyroControls: false,
-				minHeight: 200.0,
-				minWidth: 200.0,
-				scale: 1.0,
-				scaleMobile: 1.0,
+		let isMounted = true;
+
+		import('three').then((THREE) => {
+			if (typeof window !== 'undefined') {
+				window.THREE = THREE;
+			}
+			import('vanta/dist/vanta.birds.min').then((VANTA) => {
+				if (isMounted && !vantaEffect.current && vantaRef.current) {
+					vantaInstance = VANTA.default({
+						el: vantaRef.current,
+						mouseControls: true,
+						touchControls: true,
+						gyroControls: false,
+						minHeight: 200.0,
+						minWidth: 200.0,
+						scale: 1.0,
+						scaleMobile: 1.0,
+					});
+					vantaEffect.current = vantaInstance;
+				}
 			});
-			vantaEffect.current = vantaInstance;
-		}
+		});
+
 		return () => {
+			isMounted = false;
 			if (vantaEffect.current) {
 				vantaEffect.current.destroy();
 				vantaEffect.current = null;
