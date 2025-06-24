@@ -223,12 +223,14 @@ const StatCard = ({ title, value, icon: Icon, linkTo, color, bgColor }) => {
   return (
     <Link to={linkTo} tabIndex={0} aria-label={title}>
       <Card className={`hover:shadow-lg hover:scale-[1.03] active:scale-100 transition-all duration-200 cursor-pointer flex items-center gap-4 ${bgColor}`} hoverable>
-        <div className={`p-3 rounded-full ${color} bg-white dark:bg-gray-800 shadow-md`}>
-          <Icon className="h-7 w-7" />
-        </div>
-        <div>
-          <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
-          <p className="text-3xl font-bold text-gray-900 dark:text-white">{value}</p>
+        <div className="flex items-center gap-3">
+          <div className={`flex items-center px-4 py-2 rounded-full ${color} bg-white dark:bg-gray-800 shadow-md min-w-[80px] min-h-[48px]`}>
+            <Icon className="h-6 w-6 mr-2" />
+            <span className="text-xl font-bold text-gray-900 dark:text-white">{value}</span>
+          </div>
+          <div>
+            <p className="text-sm font-medium text-gray-600 dark:text-gray-400">{title}</p>
+          </div>
         </div>
       </Card>
     </Link>
