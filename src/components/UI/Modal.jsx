@@ -21,10 +21,10 @@ const Modal = ({
     window.addEventListener('keydown', handleEscKey);
     if (isOpen) {
       document.body.style.overflow = 'hidden';
-      // Focus trap
-      setTimeout(() => {
-        if (modalRef.current) modalRef.current.focus();
-      }, 50);
+      // Removed focus trap that was stealing focus from input fields
+      // setTimeout(() => {
+      //   if (modalRef.current) modalRef.current.focus();
+      // }, 50);
     }
     return () => {
       window.removeEventListener('keydown', handleEscKey);
