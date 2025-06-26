@@ -32,8 +32,6 @@ const Modal = ({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
-
   let modalWidth = 'max-w-lg';
   if (size === 'small') modalWidth = 'max-w-md';
   else if (size === 'large') modalWidth = 'max-w-2xl';
@@ -41,7 +39,12 @@ const Modal = ({
   else if (size === 'full') modalWidth = 'max-w-7xl';
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity animate-fadeIn" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div
+      className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 backdrop-blur-sm transition-opacity animate-fadeIn ${isOpen ? '' : 'hidden'}`}
+      aria-labelledby="modal-title"
+      role="dialog"
+      aria-modal="true"
+    >
       <div
         ref={modalRef}
         className={`relative w-full ${modalWidth} mx-4 my-8 bg-white dark:bg-gray-900 rounded-xl shadow-xl outline-none focus:outline-none transition-all duration-200 animate-fadeInUp`}
