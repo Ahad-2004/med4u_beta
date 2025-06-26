@@ -60,7 +60,7 @@ const Appointments = () => {
           {success && <div className="text-green-600 text-sm mt-2">{success}</div>}
         </form>
       </Card>
-      <Card>
+      <Card style={{ minHeight: '120px', padding: '1rem' }}>
         <h2 className="text-lg font-semibold mb-4">Upcoming Appointments</h2>
         {loading ? <div>Loading...</div> : (
           <ul className="divide-y divide-gray-200">
