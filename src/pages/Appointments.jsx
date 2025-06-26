@@ -66,9 +66,7 @@ const Appointments = () => {
           <ul className="divide-y divide-gray-200">
             {appointments && appointments.length > 0 ? appointments.map(app => (
               <li key={app.id} className="py-3 flex flex-col md:flex-row md:items-center md:justify-between">
-                {/* Debug: show the raw appointment object */}
-                <pre className="text-xs text-gray-400 bg-gray-100 p-2 rounded mb-2">{JSON.stringify(app, null, 2)}</pre>
-                {/* Existing UI (may need to update field names after seeing debug output) */}
+                {/* Clean UI: show only user-facing appointment details */}
                 <div>
                   <div className="font-medium text-gray-900">{app.doctor}</div>
                   <div className="text-sm text-gray-500">{app.date} at {app.time}</div>
