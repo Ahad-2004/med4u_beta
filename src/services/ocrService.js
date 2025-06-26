@@ -38,7 +38,7 @@ async function ocrImageWithBackend(imageBlob) {
 
 export const extractTextFromPDF = async (pdfUrl) => {
   try {
-    console.log('Starting PDF split and OCR (per page, backend)...');
+    console.log('Starting PDF split and OCR (per page, backend, parallel)...');
     // Fetch the PDF as an ArrayBuffer
     const response = await fetch(pdfUrl);
     if (!response.ok) {
@@ -52,17 +52,23 @@ export const extractTextFromPDF = async (pdfUrl) => {
     pdfjsLib.GlobalWorkerOptions.workerSrc = pdfjsWorker;
     const pdf = await pdfjsLib.getDocument({ data: pdfArrayBuffer }).promise;
     const numPages = pdf.numPages;
-    let allText = '';
 
+    // Process all pages in parallel
+    const pagePromises = [];
     for (let i = 1; i <= numPages; i++) {
-      console.log(`Processing page ${i} of ${numPages}`);
-      const imageBlob = await renderPageToImage(pdf, i);
-      // Send to backend OCR
-      const pageText = await ocrImageWithBackend(imageBlob);
-      allText += pageText + '\n';
+      pagePromises.push(
+        (async () => {
+          console.log(`Processing page ${i} of ${numPages}`);
+          const imageBlob = await renderPageToImage(pdf, i);
+          // Send to backend OCR
+          const pageText = await ocrImageWithBackend(imageBlob);
+          return pageText;
+        })()
+      );
     }
-    console.log('All pages processed. Returning combined text.');
-    return allText.trim();
+    const allTexts = await Promise.all(pagePromises);
+    console.log('All pages processed (parallel). Returning combined text.');
+    return allTexts.join('\n').trim();
   } catch (error) {
     console.error('Error extracting text from PDF:', error);
     throw new Error(`OCR failed: ${error.message}`);
