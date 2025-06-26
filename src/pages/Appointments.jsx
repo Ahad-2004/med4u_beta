@@ -22,7 +22,9 @@ const Appointments = () => {
     if (currentUser) {
       getDocuments([{ field: 'userId', operator: '==', value: currentUser.uid }], { field: 'date', direction: 'asc' });
     }
-  }, [currentUser, getDocuments]);
+    // Do NOT include getDocuments in the dependency array to avoid infinite loop
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentUser]);
 
   const handleChange = e => {
     setForm({ ...form, [e.target.name]: e.target.value });
