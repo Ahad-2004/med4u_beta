@@ -99,8 +99,16 @@ const UploadReport = ({ onUploadComplete }) => {
       } catch (summarizeErr) {
         summary = { findings: [{ name: 'No findings', value: '', unit: '', normal: '' }] };
       }
+      // --- Ensure findings array is always extracted for trend analysis ---
+      const findings = (summary && summary.findings)
+        ? summary.findings
+        : (summary.enhancedSummary && summary.enhancedSummary.findings)
+          ? summary.enhancedSummary.findings
+          : (summary.summary && summary.summary.findings)
+            ? summary.summary.findings
+            : [];
       const normalizedReport = normalizeReportData(
-        summary && summary.findings ? summary : (summary.summary || summary),
+        { findings },
         file,
         currentUser.uid,
         safeTitle,
